@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block html_tag %}<html ng-app='bookings'>{% endblock %}
+
+{% block title %}Booking Application{% endblock %}
+
+{% block stylesheets %}
+  {{ parent() }}
+
+  {% stylesheets '@DavegBookingBundle/Resources/public/css/*' filter='cssrewrite' %}
+      <link rel="stylesheet" href="{{ asset_url }}" />
+  {% endstylesheets %}
+
+{% endblock %}
+
+{% block body %}
+
+<booking-tabs></booking-tabs>
+
+<div class='panel createbooking' ng-show="tabpanel.isSelectedTab(1)">
+  <booking-form></booking-form>
+</div>
+
+<div class='panel showbooking' ng-show="tabpanel.isSelectedTab(2)">
+  <bookings-view></bookings-view>
+</div>
+
+</section>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  {% javascripts
+    '@DavegBookingBundle/Resources/public/js/*.js'
+  %}
+      <script src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+
+{% endblock %}

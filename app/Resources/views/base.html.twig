@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% block html_tag %}<html>{% endblock %}
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+          <link href="{{ asset('assets/css/bootstrap-3.3.6-dist/css/bootstrap.min.css') }}" rel="stylesheet" />
+          <link href="{{ asset('assets/css/jquery.filthypillow.css') }}" rel="stylesheet" >          
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    {% block body_tag %}<body>{% endblock %}
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+          <script type="text/javascript" src="{{ asset('assets/js/angular.js') }}"></script>
+          <script type="text/javascript" src="{{ asset('assets/js/jquery.js') }}"></script>
+          <script type="text/javascript" src="{{ asset('assets/js/moment.min.js') }}"></script>
+          <script type="text/javascript" src="{{ asset('assets/js/jquery.filthypillow.min.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

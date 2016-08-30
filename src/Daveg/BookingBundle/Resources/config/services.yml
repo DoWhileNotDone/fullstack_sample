@@ -1,0 +1,4 @@
+services:
+#    daveg_booking.example:
+#        class: Daveg\BookingBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

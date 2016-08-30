@@ -1,0 +1,59 @@
+<h4>Create a new Booking</h4>
+
+<div class='panel' ng-show='formCtrl.hasNotificationMessage()'>
+
+  <div class="alert alert-success">
+    <strong>{[{formCtrl.notification_message}]}</strong>
+  </div>
+
+</div>
+
+<form name='addBooking' id='addBooking'
+                        ng-submit='addBooking.$valid && formCtrl.submitForm()' novalidate>
+
+  <p>
+    <div class="clearfix">Start Date: {[{ formCtrl.newbooking.start_date}]}</div>
+    <div class="clearfix">End Date: {[{ formCtrl.newbooking.end_date}]}</div>
+    <div class="clearfix">Service: {[{ formCtrl.newbooking.service}]}</div>
+    <div class="clearfix">Customer: {[{ formCtrl.newbooking.customer}]}</div>
+    <div class="clearfix">Staff: {[{ formCtrl.newbooking.staff}]}</div>
+  </p>
+
+  <div class="form-group row">
+    <label for="start_date" class="col-xs-2 col-form-label">Start Date</label>
+    <div class="col-xs-10">
+      <div class="input-group"><input id='start_date' type='text' class="form-control filthypillow-1" ng-model="formCtrl.newbooking.start_date" placeholder="Please enter the booking start date and time." required></input><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="end_date" class="col-xs-2 col-form-label">End Date</label>
+    <div class="col-xs-10">
+      <div class="input-group"><input id='end_date' type='text' class="form-control filthypillow-2" ng-model="formCtrl.newbooking.end_date" placeholder="Please enter the booking end date and time." required></input><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="service" class="col-xs-2 col-form-label">Service</label>
+    <div class="col-xs-10">
+      <input id='service' type='text' class="form-control" ng-model="formCtrl.newbooking.service" placeholder="Please enter the required service." required></input>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="customer" class="col-xs-2 col-form-label">Customer</label>
+    <div class="col-xs-10">
+     <input id='customer' type='text' class="form-control" ng-model="formCtrl.newbooking.customer"  placeholder="Please enter the customer name." required></input>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="staff" class="col-xs-2 col-form-label">Staff</label>
+    <div class="col-xs-10">
+      <input id='staff' type='text' class="form-control" ng-model="formCtrl.newbooking.staff"  placeholder="Please enter the staff member's name." required></input>
+    </div>
+  </div>
+
+  <input type='submit' class="btn btn-default" ng-disabled="addBooking.$invalid" value="Submit" />
+
+</form>

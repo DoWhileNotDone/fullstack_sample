@@ -1,0 +1,9 @@
+daveg_booking:
+    resource: "@DavegBookingBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@DavegBookingBundle/Controller/"
+    type:     annotation
+    prefix:   /
