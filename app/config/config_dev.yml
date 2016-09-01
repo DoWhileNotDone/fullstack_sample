@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    database_name: fullstack_dev
+    database_name: fullstack_mdb_dev
 
 framework:
     router:

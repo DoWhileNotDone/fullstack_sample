@@ -4,6 +4,17 @@ parameters:
 #    parameter_name: value
 
 services:
+
+#  Unable to replace alias "doctrine.odm.mongodb.document_manager" with actual definition "doctrine_mongodb.odm.document_manager".
+#  [Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException]
+#  You have requested a non-existent service "doctrine_mongodb.odm.document_manager".
+
+#doctrine_mongodb.odm.document_manager:
+#  alias: doctrine.odm.mongodb.document_manager
+
+  # doctrine_odm.mongodb.document_manager:
+  #ß   alias: doctrinemongodb.odm.document_manager
+
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

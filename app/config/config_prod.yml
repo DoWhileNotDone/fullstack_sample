@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    database_name: fullstack_prod
+    database_name: fullstack_mdb_prod
 
 #doctrine:
 #    orm:
