@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /* Routing*/
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /* Entities*/
-use Daveg\BookingBundle\Entity\Booking;
+use Daveg\BookingBundle\Document\Booking;
 /* Response Components*/
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,12 +48,11 @@ class DefaultController extends Controller
        //Dates are supplied as string, so we convert to dates
        $start = \DateTime::createFromFormat('d/m/Y H:i', $details['start_date']) ;
        $end = \DateTime::createFromFormat('d/m/Y H:i', $details['end_date']) ;
-       
+
        $booking->setStartDate($start);
        $booking->setEndDate($end);
 
-
-       $em = $this->getDoctrine()->getManager();
+       $em = $this->get('doctrine_mongodb')->getManager();
        $em->persist($booking);
        $em->flush();
 
@@ -62,7 +61,7 @@ class DefaultController extends Controller
      }
 
     /**
-     * @Route("/booking/load/{booking_id}",
+     * @Route("/booking/load/{booking_id}.json",
      * requirements={
      * "booking_id": "\d+"
      * })
@@ -70,7 +69,7 @@ class DefaultController extends Controller
     public function loadBookingAction($booking_id)
     {
 
-        $booking = $this->getDoctrine()
+        $booking = $this->get('doctrine_mongodb')
                             ->getRepository('DavegBookingBundle:Booking')
                             ->find($booking_id);
 
@@ -90,7 +89,7 @@ class DefaultController extends Controller
      */
     public function loadBookingAllAction(){
 
-      $repository = $this->getDoctrine()->getRepository('DavegBookingBundle:Booking');
+      $repository = $this->get('doctrine_mongodb')->getRepository('DavegBookingBundle:Booking');
       $bookings = $repository->findAll();
 
       $jsonContent = $this->getSerializer()->serialize($bookings, 'json');
@@ -102,14 +101,6 @@ class DefaultController extends Controller
      * @Route("/booking/template/grid")
      */
     public function templateGridAction() {
-/*
-      $repository = $this->getDoctrine()->getRepository('DavegBookingBundle:Booking');
-      $bookings = $repository->findAll();
-
-       return $this->render('DavegBookingBundle:Default:bookings.html.twig',
-                            array('bookings' => $bookings)
-     );
-*/
 
     return $this->render('DavegBookingBundle:Default:bookings.html.twig');
 

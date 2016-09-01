@@ -1,80 +1,73 @@
 <?php
 
-namespace Daveg\BookingBundle\Entity;
+namespace Daveg\BookingBundle\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * Booking
- *
- * @ORM\Table(name="booking")
- * @ORM\Entity(repositoryClass="Daveg\BookingBundle\Repository\BookingRepository")
+ * @MongoDB\Document
+ * @MongoDB\Document(repositoryClass="Daveg\BookingBundle\Repository\BookingRepository")
  */
 class Booking
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @MongoDB\Id
      */
-    private $id;
+    protected $id;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $start_date;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $end_date;
-
-    /**
-     * @ORM\Column(type="string", length=100)
+     * @MongoDB\Field(type="string")
      */
     private $service;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @MongoDB\Field(type="string")
      */
     private $customer;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @MongoDB\Field(type="string")
      */
     private $staff;
+
+    /**
+     * @MongoDB\Field(type="date")
+     */
+    private $start_date;
+
+    /**
+     * @MongoDB\Field(type="date")
+     */
+    private $end_date;
 
 
     /**
      * Get id
      *
-     * @return int
+     * @return id $id
      */
     public function getId()
     {
         return $this->id;
     }
 
+
     /**
      * Set service
      *
      * @param string $service
-     *
-     * @return Booking
+     * @return $this
      */
     public function setService($service)
     {
         $this->service = $service;
-
         return $this;
     }
 
     /**
      * Get service
      *
-     * @return string
+     * @return string $service
      */
     public function getService()
     {
@@ -85,20 +78,18 @@ class Booking
      * Set customer
      *
      * @param string $customer
-     *
-     * @return Booking
+     * @return $this
      */
     public function setCustomer($customer)
     {
         $this->customer = $customer;
-
         return $this;
     }
 
     /**
      * Get customer
      *
-     * @return string
+     * @return string $customer
      */
     public function getCustomer()
     {
@@ -109,20 +100,18 @@ class Booking
      * Set staff
      *
      * @param string $staff
-     *
-     * @return Booking
+     * @return $this
      */
     public function setStaff($staff)
     {
         $this->staff = $staff;
-
         return $this;
     }
 
     /**
      * Get staff
      *
-     * @return string
+     * @return string $staff
      */
     public function getStaff()
     {
@@ -132,21 +121,19 @@ class Booking
     /**
      * Set startDate
      *
-     * @param \DateTime $startDate
-     *
-     * @return Booking
+     * @param date $startDate
+     * @return $this
      */
     public function setStartDate($startDate)
     {
         $this->start_date = $startDate;
-
         return $this;
     }
 
     /**
      * Get startDate
      *
-     * @return \DateTime
+     * @return date $startDate
      */
     public function getStartDate()
     {
@@ -156,21 +143,19 @@ class Booking
     /**
      * Set endDate
      *
-     * @param \DateTime $endDate
-     *
-     * @return Booking
+     * @param date $endDate
+     * @return $this
      */
     public function setEndDate($endDate)
     {
         $this->end_date = $endDate;
-
         return $this;
     }
 
     /**
      * Get endDate
      *
-     * @return \DateTime
+     * @return date $endDate
      */
     public function getEndDate()
     {
