@@ -31,6 +31,16 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/bookings")
+     */
+    public function restfulAPI() {
+
+
+
+
+    }
+
+    /**
      * @Route("/booking/insert/")
      */
      public function insertBookingAction() {

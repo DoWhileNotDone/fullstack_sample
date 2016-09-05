@@ -10,6 +10,7 @@ parameters:
     locale: en
     database_user: symfony
     database_password: symfony
+    mongodb_server: "mongodb://localhost:27017"
 
 assetic:
     debug:          '%kernel.debug%'
@@ -53,7 +54,7 @@ doctrine_mongodb:
         default:
             server: "%mongodb_server%"
             options: {}
-    default_database: fullstack_%kernel.environment%        
+    default_database: fullstack_%kernel.environment%
     document_managers:
         default:
             auto_mapping: true
