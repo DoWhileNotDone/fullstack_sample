@@ -27,18 +27,161 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('DavegBookingBundle:Default:index.html.twig');
+       return $this->renderTemplate('index');
     }
 
     /**
      * @Route("/bookings")
+     * Valid Params:
+     *   GET: {no params} INDEX
+     *   * Data: Input - {} | Output  - text/html
+     *   GET: template='name of bundle template'
+     *   * Data: Input - {} | Output  - text/html
+     *   GET: data = $booking_id, all
+     *   * Data: Input - {} | Output  - application/json, application/xml
+     *   POST: insert
+     *   * Data: Input - application/json | Output  - text/plain
      */
     public function restfulAPI() {
 
+      $request = Request::createFromGlobals();
 
+      switch($request->getMethod()) {
+        case 'GET':
+          $response = $this->handleGetRequest();
+          break;
+        case 'POST':
+          $response = $this->handlePostRequest();
+          break;
+        default:
+          //TODO: Extend Response to set params
+          //Return Not Supported Request Method
+          $response = new Response();
 
+          $response->setContent('Request Method Not Supported');
+          $response->setStatusCode(Response::HTTP_METHOD_NOT_ALLOWED);
+
+          //TODO: Set Content Type to match Request Accept
+          $response->headers->set('Content-Type', 'text/plain');
+
+      }
+
+      return $response;
 
     }
+
+    private function handleGetRequest(){
+
+      $request = Request::createFromGlobals();
+
+      //Handle index
+      if (!count($request->query->all()))
+        return $this->handleGetTemplateRequest('index');
+
+      //Handle template
+      if ($request->query->has('template'))
+        return $this->handleGetTemplateRequest($request->query->get('template'));
+
+      //Handle data
+      if ($request->query->has('data'))
+        return $this->handleGetDataRequest($request->query->get('data'));
+
+      //TODO: Return Invalid GET Request
+
+    }
+
+    private function handleGetDataRequest($booking_id) {
+
+      $accepted_request_content_types = array();
+      $accepted_response_content_types = array('application/json');
+
+      if ($response == $this->validateRequest($accepted_request_content_types,
+                                              $accepted_response_content_types))
+            return $response;
+
+      if ($booking_id == 'all')
+         $data =  $this->loadBookingAllAction();
+      else
+         $data =  $this->loadBookingAction($booking_id);
+
+      //TODO: FORMAT RESPONSE§
+
+      return $data;
+
+    }
+
+    private function handleGetTemplateRequest($template_name) {
+
+      //At the moment the only expected POST request is Insert Booking
+      $accepted_request_content_types = array();
+      //Angular Request Accept Settings are set to
+      // application/json, text/plain, */*
+      // However the expected response is text/html
+      $accepted_response_content_types = array('text/html', 'text/plain');
+
+      if ($response == $this->validateRequest($accepted_request_content_types,
+                                              $accepted_response_content_types))
+            return $response;
+
+
+      return $this->renderTemplate($template_name);
+
+    }
+
+
+    private function handlePostRequest(){
+
+      //At the moment the only expected POST request is Insert Booking
+      $accepted_request_content_types = array('application/json');
+      $accepted_response_content_types = array('text/plain');
+
+      if ($response == $this->validateRequest($accepted_request_content_types,
+                                              $accepted_response_content_types))
+            return $response;
+
+
+      return $this->insertBookingAction();
+
+    }
+
+    private function validateRequest($accepted_request_content_types, $accepted_response_content_types) {
+
+      $request = Request::createFromGlobals();
+
+      $content_type = $request->headers->get('content_type');
+
+      if (!empty($accepted_request_content_types) && !in_array($content_type, $accepted_request_content_types)) {
+
+        $response = new Response();
+
+        $response->setContent('Request Content Type Not Supported');
+        $response->setStatusCode(Response::HTTP_UNSUPPORTED_MEDIA_TYPE);
+
+        //TODO: Set Content Type to match Request Accept
+        $response->headers->set('Content-Type', 'text/plain');
+
+        return $response;
+      }
+
+      //TODO: Check Accepted Response matches what the interface can supply
+      //TODO: Include Wildcards *
+      $accepted = $request->getAcceptableContentTypes();
+
+      if (false) {
+
+        $response = new Response();
+
+        $response->setContent('Response cannot meet Request Accept');
+        $response->setStatusCode(Response::HTTP_NOT_ACCEPTABLE);
+
+        //TODO: Set Content Type to match Request Accept
+        $response->headers->set('Content-Type', 'text/plain');
+
+        return $response;
+      }
+
+    }
+
 
     /**
      * @Route("/booking/insert/")
@@ -50,15 +193,21 @@ class DefaultController extends Controller
        $details = json_decode($request->getContent(), true);
 
        $booking = new Booking();
+       //Sanitize User Input
+       $service = filter_var($details['service'], FILTER_SANITIZE_STRING);
+       $customer = filter_var($details['customer'], FILTER_SANITIZE_STRING);
+       $staff = filter_var($details['staff'], FILTER_SANITIZE_STRING);
+       $start_date = filter_var($details['start_date'], FILTER_SANITIZE_STRING);
+       $end_date = filter_var($details['end_date'], FILTER_SANITIZE_STRING);
+
+       //Dates are supplied as string, so we convert to dates
+       $start = \DateTime::createFromFormat('d/m/Y H:i', $start_date) ;
+       $end = \DateTime::createFromFormat('d/m/Y H:i', $end_date) ;
 
        //Populate object with form data
-       $booking->setService($details['service']);
-       $booking->setCustomer($details['customer']);
-       $booking->setStaff($details['staff']);
-       //Dates are supplied as string, so we convert to dates
-       $start = \DateTime::createFromFormat('d/m/Y H:i', $details['start_date']) ;
-       $end = \DateTime::createFromFormat('d/m/Y H:i', $details['end_date']) ;
-
+       $booking->setService($service);
+       $booking->setCustomer($customer);
+       $booking->setStaff($staff);
        $booking->setStartDate($start);
        $booking->setEndDate($end);
 
@@ -111,29 +260,36 @@ class DefaultController extends Controller
      * @Route("/booking/template/grid")
      */
     public function templateGridAction() {
-
-    return $this->render('DavegBookingBundle:Default:bookings.html.twig');
-
+      return $this->renderTemplate('bookings');
     }
 
     /**
      * @Route("/booking/template/form")
      */
     public function templateFormAction() {
-
-       return $this->render('DavegBookingBundle:Default:bookingform.html.twig');
-
+       return $this->renderTemplate('bookingform');
     }
 
     /**
      * @Route("/booking/template/tabs")
      */
     public function templateTabsAction() {
-
-       return $this->render('DavegBookingBundle:Default:bookingtabs.html.twig');
-
+       return $this->renderTemplate('bookingtabs');
     }
 
+    private function renderTemplate($templateName) {
+
+      try {
+
+        $template = "DavegBookingBundle:Default:{$templateName}.html.twig";
+        return $this->render($template);
+
+      } catch (Exception $e) {
+
+
+      }
+
+    }
 
     //TODO: Extract into shared module
     private function getSerializer() {
