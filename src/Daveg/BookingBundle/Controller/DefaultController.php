@@ -95,9 +95,10 @@ class DefaultController extends Controller
       $accepted_request_content_types = array();
       $accepted_response_content_types = array('application/json');
 
-      if ($response == $this->validateRequest($accepted_request_content_types,
+      if ($response = $this->validateRequest($accepted_request_content_types,
                                               $accepted_response_content_types))
-            return $response;
+        return $response;
+
 
       if ($booking_id == 'all')
          $data =  $this->loadBookingAllAction();
@@ -119,10 +120,9 @@ class DefaultController extends Controller
       // However the expected response is text/html
       $accepted_response_content_types = array('text/html', 'text/plain');
 
-      if ($response == $this->validateRequest($accepted_request_content_types,
+      if ($response = $this->validateRequest($accepted_request_content_types,
                                               $accepted_response_content_types))
-            return $response;
-
+        return $response;
 
       return $this->renderTemplate($template_name);
 
@@ -135,10 +135,9 @@ class DefaultController extends Controller
       $accepted_request_content_types = array('application/json');
       $accepted_response_content_types = array('text/plain');
 
-      if ($response == $this->validateRequest($accepted_request_content_types,
+      if ($response = $this->validateRequest($accepted_request_content_types,
                                               $accepted_response_content_types))
-            return $response;
-
+        return $response;
 
       return $this->insertBookingAction();
 
@@ -179,6 +178,8 @@ class DefaultController extends Controller
 
         return $response;
       }
+
+      return false;
 
     }
 
