@@ -15,14 +15,7 @@
 
 {% block body %}
 
-<div class='welcome'>
-Welcome {{ user_name }}
-
-{% if is_granted('IS_AUTHENTICATED_FULLY') %} <p>Username: {{ app.user.username }}</p>
-{% endif %}
-</div>
-
-
+{{ parent() }}
 
 <booking-tabs></booking-tabs>
 
