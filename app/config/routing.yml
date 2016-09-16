@@ -1,3 +1,8 @@
+daveg_security:
+    resource: "@DavegSecurityBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 daveg_booking:
     resource: "@DavegBookingBundle/Controller/"
     type:     annotation
@@ -7,3 +12,6 @@ app:
     resource: "@DavegBookingBundle/Controller/"
     type:     annotation
     prefix:   /
+
+logout:
+    path: /logout

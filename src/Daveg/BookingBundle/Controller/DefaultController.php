@@ -27,6 +27,11 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+
+
+        // The second parameter is used to specify on what object the role is tested.
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
+
         return $this->render('DavegBookingBundle:Default:index.html.twig');
     }
 
@@ -48,7 +53,7 @@ class DefaultController extends Controller
        //Dates are supplied as string, so we convert to dates
        $start = \DateTime::createFromFormat('d/m/Y H:i', $details['start_date']) ;
        $end = \DateTime::createFromFormat('d/m/Y H:i', $details['end_date']) ;
-       
+
        $booking->setStartDate($start);
        $booking->setEndDate($end);
 
@@ -111,7 +116,7 @@ class DefaultController extends Controller
      );
 */
 
-    return $this->render('DavegBookingBundle:Default:bookings.html.twig');
+      return $this->render('DavegBookingBundle:Default:bookings.html.twig');
 
     }
 
