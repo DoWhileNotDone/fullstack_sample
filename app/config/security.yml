@@ -4,20 +4,31 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
-          memory:
-             users:
-                daveg:
-                  password: $2y$12$Fel5oFWSNzt9NOub5JBQh.0klc.m3vaDGlE4tNXoTTnPVVIUo4KSq
-                  roles: 'ROLE_USER'
-                admin:
-                  password: $2y$12$QXdEcDDCLee7DqnHD0FIs.T5XRIMGjuOMw9WsekTCe4ASol9bpC7y
-                  roles: 'ROLE_ADMIN'
+        our_db_provider:
+            entity:
+                class: DavegSecurityBundle:User
+                property: username
+                # if you're using multiple entity managers
+                # manager_name: customer
+
+        # in_memory:
+        #   memory:
+        #      users:
+        #         daveg:
+        #           password: {}
+        #           roles: 'ROLE_USER'
+        #         admin:
+        #           password: {}
+        #           roles: 'ROLE_ADMIN'
 
     encoders:
-        Symfony\Component\Security\Core\User\User:
-          algorithm: bcrypt
-          cost: 12
+        Daveg\SecurityBundle\Entity\User:
+           algorithm: bcrypt
+           cost: 12
+
+        # Symfony\Component\Security\Core\User\User:
+        #   algorithm: bcrypt
+        #   cost: 12
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -26,7 +37,23 @@ security:
             security: false
 
         main:
-            anonymous: ~
+
+          anonymous: ~
+
+          pattern:    ^/
+          form_login:
+              login_path: login
+              check_path: login
+              csrf_token_generator: security.csrf.token_manager
+
+          provider: our_db_provider
+
+          logout:
+              path: /logout
+              target: /
+
+        # main:
+        #    anonymous: ~
             # activate different ways to authenticate
 
             # http_basic: ~
@@ -34,14 +61,14 @@ security:
 
             # form_login: ~
             # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
-            form_login:
-                login_path: login
-                check_path: login
-                csrf_token_generator: security.csrf.token_manager
+        #    form_login:
+        #        login_path: login
+        #        check_path: login
+        #        csrf_token_generator: security.csrf.token_manager
 
-            logout:
-                path: /logout
-                target: /
+        #    logout:
+        #        path: /logout
+        #        target: /
 
     access_control:
             - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

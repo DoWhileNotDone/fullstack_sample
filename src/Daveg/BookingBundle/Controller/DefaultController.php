@@ -32,7 +32,17 @@ class DefaultController extends Controller
         // The second parameter is used to specify on what object the role is tested.
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Unable to access this page!');
 
-        return $this->render('DavegBookingBundle:Default:index.html.twig');
+        //$user = $this->getUser();
+        // the above is a shortcut for this
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        return $this->render('DavegBookingBundle:Default:index.html.twig',
+                             array(
+                                'user_name' => $user->getUsername()
+                                  )
+                            );
+
     }
 
     /**
